@@ -16,8 +16,6 @@ class Sudoku():
 
     def validar(self):
         self.contador = -1
-        self.c = -3
-        self.f = -3
         for fil in self.tablero:
             self.contador += 1
             for i in range(len(self.tablero)):
