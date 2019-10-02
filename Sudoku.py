@@ -4,10 +4,7 @@ import copy
 class Sudoku():
 
     def __init__(self, lista):
-        # Convierte la lista de strings en una lista de listas
-        self.tablero = []
-        for n in range(len(lista)):
-            self.tablero.append(list(lista[n]))
+        self.tablero = lista
 
         # Guarda las coordenadas de los numeros que no se pueden borrar
         self.no_borrable = []

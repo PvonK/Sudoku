@@ -1,10 +1,23 @@
+import requests
 from Sudoku import Sudoku
 
 
 class Interfaz (Sudoku):
 
-    def __init__(self, lista):
-        Sudoku.__init__(self, lista)
+    def __init__(self):
+        self.resp = requests.get('http://www.cs.utep.edu/cheon/ws/sudoku/new/?level=1&size=9')
+        self.lista = [["x", "x", "x", "x", "x", "x", "x", "x", "x"],
+                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
+                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
+                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
+                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
+                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
+                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
+                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
+                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"]]
+        for item in self.resp.json()["squares"]:
+            self.lista[item["x"]][item["y"]] = item["value"]
+        Sudoku.__init__(self, self.lista)
 
     def ingresar(self, numero, x, y):
         try:
@@ -49,13 +62,5 @@ class Interfaz (Sudoku):
 
         print("FIN")
 
-# juego = Interfaz(["53xx7xxxx",
-#                   "6xx195xxx",
-#                   "x98xxxx6x",
-#                   "8xxx6xxx3",
-#                   "4xx8x3xx1",
-#                   "7xxx2xxx6",
-#                   "x6xxxx28x",
-#                   "xxx419xx5",
-#                   "xxxx8xx79"])
+# juego = Interfaz()
 # juego.play()
