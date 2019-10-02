@@ -6,13 +6,13 @@ class Sudoku():
     def __init__(self, lista):
         # Convierte la lista de strings en una lista de listas
         self.tablero = []
-        for n in range(9):
+        for n in range(len(lista)):
             self.tablero.append(list(lista[n]))
 
         # Guarda las coordenadas de los numeros que no se pueden borrar
         self.no_borrable = []
         for i in range(9):
-            for j in range(9):
+            for j in range(len(self.tablero[i])):
                 if (self.tablero[i][j] != "x"):
                     self.no_borrable.append((i, j))
 
@@ -60,13 +60,7 @@ class Sudoku():
             # Si no se cumple, el tablero original se iguala al duplicado
             # que era correcto
             self.tablero = self.tabla_temp
-            print("\nNo puede ingresar ese numero ahi")
-
-        # Imprime el tablero
-        for fila in self.tablero:
-            print(" ")
-            for elemento in fila:
-                print(elemento, end=" ")
+            return "No puede ingresar ese numero ahi"
 
         return self.tablero
 
