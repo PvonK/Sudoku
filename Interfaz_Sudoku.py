@@ -1,66 +1,63 @@
-import requests
+from api import api
+
 from Sudoku import Sudoku
 
 
-class Interfaz (Sudoku):
+class Interfaz ():
 
-    def __init__(self):
-        self.resp = requests.get('http://www.cs.utep.edu/cheon/ws/sudoku/new/?level=1&size=9')
-        self.lista = [["x", "x", "x", "x", "x", "x", "x", "x", "x"],
-                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
-                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
-                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
-                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
-                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
-                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
-                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"],
-                      ["x", "x", "x", "x", "x", "x", "x", "x", "x"]]
-        for item in self.resp.json()["squares"]:
-            self.lista[item["x"]][item["y"]] = item["value"]
-        Sudoku.__init__(self, self.lista)
+    def pedir_tam(self):
+
+        self.tam = 0
+
+        while self.tam != 9 and self.tam != 4:
+            self.tam = int(input("Ingrese el tamaño del tablero (4/9)  "))
+            if self.tam != 9 and self.tam != 4:
+                print("Ingrese 4 o 9")
+
+        self.lista = api(self.tam)
+
+        self.game = Sudoku(self.lista)
 
     def ingresar(self, numero, x, y):
         try:
-            if int(x) > 8:
+            if int(x) > self.tam:
                 return False
-            elif int(y) > 8:
+            elif int(y) > self.tam:
                 return False
             elif numero != "x":
-                if int(numero) > 0 and int(numero) < 10:
+                if int(numero) > 0 and int(numero) < self.tam+1:
                     return True
             else:
                 return True
-        except:
+        except Exception:
             return False
 
     def play(self):
 
-        for fila in self.tablero:
+        self.pedir_tam()
+
+        for fila in self.game.tablero:
             print(" ")
             for elemento in fila:
                 print(elemento, end=" ")
 
-        while not Sudoku.gano(self):
+        while not self.game.gano():
             print("")
             self.n = input("Ingrese un numero   ")
             self.i = input("ingrese la fila   ")
             self.j = input("Ingrese la columna   ")
             if self.ingresar(self.n, self.i, self.j):
-                self.tabla = Sudoku.poner_numero(self, self.n, int(self.i), int(self.j))
+                self.tabla = self.game.poner_numero(self.n, int(self.i)-1, int(self.j)-1)
 
-                if len(self.tabla) == 9:
-                    for fila in self.tabla:
-                        print(" ")
-                        for elemento in fila:
-                            print(elemento, end=" ")
-
-                else:
-                    print("\n", self.tabla)
+                for fila in self.game.tablero:
+                    print(" ")
+                    for elemento in fila:
+                        print(elemento, end=" ")
 
             else:
                 print("Ingrese numeros validos")
 
-        print("FIN")
+        print("\nFIN")
 
 # juego = Interfaz()
 # juego.play()

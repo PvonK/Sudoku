@@ -1,14 +1,18 @@
 import copy
 
+import math
+
 
 class Sudoku():
 
     def __init__(self, lista):
         self.tablero = lista
+        self.tam = len(self.tablero)
+        self.zona = int(math.sqrt(self.tam))
 
         # Guarda las coordenadas de los numeros que no se pueden borrar
         self.no_borrable = []
-        for i in range(9):
+        for i in range(self.tam):
             for j in range(len(self.tablero[i])):
                 if (self.tablero[i][j] != "x"):
                     self.no_borrable.append((i, j))
@@ -20,8 +24,8 @@ class Sudoku():
         # Valido si algun elemento se repite en las filas y en las columnas
         for fil in self.tablero:
             self.contador += 1
-            for i in range(9):
-                for j in range(9):
+            for i in range(self.tam):
+                for j in range(self.tam):
                     if fil[i] == fil[j] and fil[i] != "x" and i != j:
                         return False
                     elif (self.tablero[i][j] == fil[j] and fil[j] != "x" and
@@ -29,12 +33,12 @@ class Sudoku():
                         return False
 
         # Valido si algun elemento se repite en las zonas
-        for fila in range(0, 9, 3):
-            for columna in range(0, 9, 3):
-                for x in range(3):
-                    for y in range(3):
-                        for i in range(3):
-                            for j in range(3):
+        for fila in range(0, self.tam, self.zona):
+            for columna in range(0, self.tam, self.zona):
+                for x in range(self.zona):
+                    for y in range(self.zona):
+                        for i in range(self.zona):
+                            for j in range(self.zona):
                                 if(self.tablero[x+fila][y+columna] != "x" and
                                    self.tablero[i+fila][j+columna] == self.tablero[x+fila][y+columna] and
                                    (x+fila, y+columna) != (i+fila, j+columna)):
@@ -63,7 +67,7 @@ class Sudoku():
 
     # Se fija si hay "x" en el tablero
     def gano(self):
-        for n in range(9):
+        for n in range(self.tam):
             if ("x" in self.tablero[n]):
                 return False
         return True
