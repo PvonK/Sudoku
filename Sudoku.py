@@ -1,5 +1,4 @@
 import copy
-
 import math
 
 
@@ -17,33 +16,57 @@ class Sudoku():
                 if (self.tablero[i][j] != "x"):
                     self.no_borrable.append((i, j))
 
+    def validarFilas(self, tabla):
+        # Valido si algun elemento se repite en las filas
+        for fil in tabla:
+            for n in range(self.tam):
+                self.elem = fil.pop(n)
+                if self.elem in fil and self.elem != "x":
+                    return False
+                fil.insert(n, self.elem)
+        return True
+
     # Valida si el tablero es un tablero que cumple las reglas
     def validar(self):
-        self.contador = -1
 
-        # Valido si algun elemento se repite en las filas y en las columnas
-        for fil in self.tablero:
-            self.contador += 1
-            for i in range(self.tam):
-                for j in range(self.tam):
-                    if fil[i] == fil[j] and fil[i] != "x" and i != j:
-                        return False
-                    elif (self.tablero[i][j] == fil[j] and fil[j] != "x" and
-                          i != self.contador):
-                        return False
+        # Valido si algun elemento se repite en las filas
+        if not self.validarFilas(self.tablero):
+            return False
+
+        # Creo una tabla transpuesta
+        # y valido si algun elemento se repite en las columnas
+        self.tablaT = []
+        for i in range(self.tam):
+            self.column = []
+            for j in range(self.tam):
+                self.column.append(self.tablero[j][i])
+            self.tablaT.append(self.column)
+
+        if not self.validarFilas(self.tablaT):
+            return False
 
         # Valido si algun elemento se repite en las zonas
-        for fila in range(0, self.tam, self.zona):
-            for columna in range(0, self.tam, self.zona):
+        self.listaDeZonas = []
+        for i in range(0, self.tam, self.zona):
+            for j in range(0, self.tam, self.zona):
+                self.listaZ = []
                 for x in range(self.zona):
-                    for y in range(self.zona):
-                        for i in range(self.zona):
-                            for j in range(self.zona):
-                                if(self.tablero[x+fila][y+columna] != "x" and
-                                   self.tablero[i+fila][j+columna] == self.tablero[x+fila][y+columna] and
-                                   (x+fila, y+columna) != (i+fila, j+columna)):
-                                    return False
+                    self.listaZ.extend(self.tablero[i+x][j:j+self.zona])
+                self.listaDeZonas.append(self.listaZ)
+
+        if not self.validarFilas(self.listaDeZonas):
+            return False
+
         return True
+
+    def getTable(self):
+        self.tableroImpreso = ""
+        for fila in self.tablero:
+            for elemento in fila:
+                self.tableroImpreso += elemento + " "
+            self.tableroImpreso += "\n"
+
+        return self.tableroImpreso
 
     # Pone el numero en las coordenadas elegidas si es valido
     def poner_numero(self, numero, x, y):
@@ -57,13 +80,12 @@ class Sudoku():
         # numero que se ha agregado y se fija si las coordenadaas son las
         # de un numero fijo
         if (not self.validar() or (x, y) in self.no_borrable):
-
             # Si no se cumple, el tablero original se iguala al duplicado
             # que era correcto
             self.tablero = self.tabla_temp
             return "No puede ingresar ese numero ahi"
 
-        return self.tablero
+        return self.getTable()
 
     # Se fija si hay "x" en el tablero
     def gano(self):

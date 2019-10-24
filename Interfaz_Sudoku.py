@@ -9,13 +9,15 @@ class Interfaz ():
 
         self.tam = 0
 
-        while self.tam != 9 and self.tam != 4:
-            self.tam = int(input("Ingrese el tamaño del tablero (4/9)  "))
-            if self.tam != 9 and self.tam != 4:
-                print("Ingrese 4 o 9")
+        while self.tam != "9" and self.tam != "4":
+            self.tam = input("Ingrese el tamaño del tablero (4/9)  ")
+
+            if self.tam != "9" and self.tam != "4":
+                print("Ingrese 4 o 9 \n\n")
+
+        self.tam = int(self.tam)
 
         self.lista = api(self.tam)
-
         self.game = Sudoku(self.lista)
 
     def ingresar(self, numero, x, y):
@@ -32,32 +34,35 @@ class Interfaz ():
         except Exception:
             return False
 
+    def pedirvalores(self):
+
+        self.n = input("Ingrese un numero   ")
+        self.i = input("ingrese la fila   ")
+        self.j = input("Ingrese la columna   ")
+        print("")
+
     def play(self):
 
         self.pedir_tam()
-
-        for fila in self.game.tablero:
-            print(" ")
-            for elemento in fila:
-                print(elemento, end=" ")
+        print("")
+        print(self.game.getTable())
 
         while not self.game.gano():
-            print("")
-            self.n = input("Ingrese un numero   ")
-            self.i = input("ingrese la fila   ")
-            self.j = input("Ingrese la columna   ")
+            self.pedirvalores()
             if self.ingresar(self.n, self.i, self.j):
-                self.tabla = self.game.poner_numero(self.n, int(self.i)-1, int(self.j)-1)
-
-                for fila in self.game.tablero:
-                    print(" ")
-                    for elemento in fila:
-                        print(elemento, end=" ")
+                print(self.game.poner_numero(
+                                             self.n,
+                                             int(self.i)-1,
+                                             int(self.j)-1
+                                             )
+                      )
 
             else:
                 print("Ingrese numeros validos")
 
         print("\nFIN")
 
-# juego = Interfaz()
-# juego.play()
+
+if __name__ == "__main__":
+    juego = Interfaz()
+    juego.play()
