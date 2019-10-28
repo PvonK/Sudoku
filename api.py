@@ -4,7 +4,7 @@ import requests
 def api(tam, level):
     resp = requests.get(
         'http://www.cs.utep.edu/cheon/ws/sudoku/new/?level=' +
-        level +
+        str(level) +
         '&size=' +
         str(tam)
         )

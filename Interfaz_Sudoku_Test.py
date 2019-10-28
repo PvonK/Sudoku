@@ -2,25 +2,28 @@ import unittest
 import io
 from parameterized import parameterized
 from unittest.mock import patch, MagicMock
-from Sudoku import Sudoku
 from Interfaz_Sudoku import Interfaz
 
 
 class TestInterfazSudoku(unittest.TestCase):
 
     def setUp(self):
+        lista4 = [["4", "x", "3", "1"],
+                  ["x", "3", "x", "x"],
+                  ["3", "1", "x", "2"],
+                  ["x", "4", "x", "x"]]
         self.user4 = Interfaz()
-        self.user4.tam = 4
-        self.user4.lvl = 1
-        self.user4.game = Sudoku([["4", "x", "3", "1"],
-                                  ["x", "3", "x", "x"],
-                                  ["3", "1", "x", "2"],
-                                  ["x", "4", "x", "x"]])
+        mock = MagicMock()
+        mock.side_effect = ["4", "1"]
+        with patch("builtins.input",
+                   new=mock
+                   ), patch(
+                   "Interfaz_Sudoku.api",
+                   return_value=lista4
+                   ):
+            self.user4.inicio()
 
-        self.user9 = Interfaz()
-        self.user9.tam = 9
-        self.user9.lvl = 1
-        self.user9.game = Sudoku([
+        lista9 = [
                     ["5", "3", "x", "x", "7", "x", "x", "x", "x"],
                     ["6", "x", "x", "x", "9", "5", "x", "x", "x"],
                     ["x", "9", "8", "x", "x", "x", "x", "6", "x"],
@@ -29,7 +32,18 @@ class TestInterfazSudoku(unittest.TestCase):
                     ["7", "x", "x", "x", "2", "x", "x", "x", "6"],
                     ["x", "6", "x", "x", "x", "x", "2", "8", "x"],
                     ["x", "x", "x", "4", "1", "9", "x", "x", "5"],
-                    ["x", "x", "x", "x", "8", "x", "x", "7", "9"]])
+                    ["x", "x", "x", "x", "8", "x", "x", "7", "9"]]
+
+        self.user9 = Interfaz()
+        mock = MagicMock()
+        mock.side_effect = ["9", "1"]
+        with patch("Interfaz_Sudoku.api",
+                   return_value=lista9
+                   ), patch(
+                   "builtins.input",
+                   new=mock
+                   ):
+            self.user9.inicio()
 
     @parameterized.expand([
         ("a", "4", "6"),

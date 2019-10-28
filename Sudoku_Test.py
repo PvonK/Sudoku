@@ -37,17 +37,6 @@ class TestSudoku(unittest.TestCase):
         (6, 6, 3),
         (9, 7, 0),
         (8, 8, 1),
-    ])
-    def test_Sudoku_9_poner_numeros_misma_fila(self, numero, fila, columna):
-
-        result = self.sudoku9.poner_numero(numero, fila, columna)
-
-        self.assertEqual(
-            result,
-            "No puede ingresar ese numero ahi"
-        )
-
-    @parameterized.expand([
         (5, 8, 0),
         (3, 8, 1),
         (8, 7, 2),
@@ -57,17 +46,6 @@ class TestSudoku(unittest.TestCase):
         (2, 0, 6),
         (6, 7, 7),
         (9, 0, 8),
-    ])
-    def test_Sudoku_9_poner_numeros_misma_columna(self, numero, fila, columna):
-
-        result = self.sudoku9.poner_numero(numero, fila, columna)
-
-        self.assertEqual(
-            result,
-            "No puede ingresar ese numero ahi"
-        )
-
-    @parameterized.expand([
         (3, 2, 0),
         (9, 0, 3),
         (6, 0, 8),
@@ -76,9 +54,9 @@ class TestSudoku(unittest.TestCase):
         (6, 3, 6),
         (6, 8, 0),
         (9, 8, 3),
-        (8, 8, 6),
+        (8, 8, 6)
     ])
-    def test_Sudoku_9_poner_numeros_misma_zona(self, numero, fila, columna):
+    def test_Sudoku_9_poner_numeros_incorrectos(self, numero, fila, columna):
 
         result = self.sudoku9.poner_numero(numero, fila, columna)
 
@@ -154,46 +132,57 @@ class TestSudoku(unittest.TestCase):
             "No puede ingresar ese numero ahi"
         )
 
-    def test_Sudoku_9_misma_fila(self):
+    @parameterized.expand([
+        ("7", 0, 2),
+        ("5", 1, 7),
+        ("6", 2, 3),
+        ("8", 3, 6),
+        ("4", 4, 4),
+        ("7", 5, 6),
+        ("6", 6, 3),
+        ("9", 7, 0),
+        ("8", 8, 1),
+        ])
+    def test_Sudoku_9_metodo_validar_Filas(self, numero, fila, columna):
 
-        sudoku = Sudoku([["5", "3", "x", "x", "7", "x", "x", "3", "x"],
-                         ["6", "x", "x", "1", "9", "5", "x", "x", "x"],
-                         ["x", "9", "8", "x", "x", "x", "x", "6", "x"],
-                         ["8", "x", "x", "x", "6", "x", "x", "x", "3"],
-                         ["4", "x", "x", "8", "x", "3", "x", "x", "1"],
-                         ["7", "x", "x", "x", "2", "x", "x", "x", "6"],
-                         ["x", "6", "x", "x", "x", "x", "2", "8", "x"],
-                         ["x", "x", "x", "4", "1", "9", "x", "x", "5"],
-                         ["x", "x", "x", "x", "8", "x", "x", "7", "9"]])
+        self.sudoku9.tablero[fila][columna] = numero
 
-        self.assertFalse(sudoku.validar())
+        self.assertFalse(self.sudoku9.validarFilas(self.sudoku9.tablero))
 
-    def test_Sudoku_9_misma_columna(self):
-        sudoku = Sudoku([["5", "3", "x", "x", "7", "x", "x", "x", "x"],
-                         ["6", "x", "x", "1", "9", "5", "x", "x", "x"],
-                         ["x", "9", "8", "x", "x", "x", "x", "6", "x"],
-                         ["8", "x", "x", "x", "6", "x", "x", "x", "3"],
-                         ["4", "x", "x", "8", "x", "3", "x", "x", "1"],
-                         ["7", "x", "x", "x", "2", "x", "x", "x", "6"],
-                         ["x", "6", "x", "x", "x", "x", "2", "8", "x"],
-                         ["x", "3", "x", "4", "1", "9", "x", "x", "5"],
-                         ["x", "x", "x", "x", "8", "x", "x", "7", "9"]])
+    @parameterized.expand([
+        ("7", 0, 2),
+        ("5", 1, 7),
+        ("6", 2, 3),
+        ("8", 3, 6),
+        ("4", 4, 4),
+        ("7", 5, 6),
+        ("6", 6, 3),
+        ("9", 7, 0),
+        ("8", 8, 1),
+        ("5", 8, 0),
+        ("3", 8, 1),
+        ("8", 7, 2),
+        ("4", 0, 3),
+        ("7", 6, 4),
+        ("9", 0, 5),
+        ("2", 0, 6),
+        ("6", 7, 7),
+        ("9", 0, 8),
+        ("3", 2, 0),
+        ("9", 0, 3),
+        ("6", 0, 8),
+        ("7", 3, 2),
+        ("2", 3, 5),
+        ("6", 3, 6),
+        ("6", 8, 0),
+        ("9", 8, 3),
+        ("8", 8, 6),
+    ])
+    def test_Sudoku_9_metodo_validar(self, numero, fila, columna):
 
-        self.assertFalse(sudoku.validar())
+        self.sudoku9.tablero[fila][columna] = numero
 
-    def test_Sudoku_9_misma_zona(self):
-
-        sudoku = Sudoku([["5", "3", "x", "x", "7", "x", "x", "x", "x"],
-                         ["6", "x", "3", "1", "9", "5", "x", "x", "x"],
-                         ["x", "9", "8", "x", "x", "x", "x", "6", "x"],
-                         ["8", "x", "x", "x", "6", "x", "x", "x", "3"],
-                         ["4", "x", "x", "8", "x", "3", "x", "x", "1"],
-                         ["7", "x", "x", "x", "2", "x", "x", "x", "6"],
-                         ["x", "6", "x", "x", "x", "x", "2", "8", "x"],
-                         ["x", "x", "x", "4", "1", "9", "x", "x", "5"],
-                         ["x", "x", "x", "x", "8", "x", "x", "7", "9"]])
-
-        self.assertFalse(sudoku.validar())
+        self.assertFalse(self.sudoku9.validar())
 
     def test_Sudoku_9_todavia_no_gana(self):
 
@@ -212,31 +201,29 @@ class TestSudoku(unittest.TestCase):
 
         self.assertTrue(sudoku.gano())
 
-    def test_Sudoku_4_misma_fila(self):
-
-        sudoku = Sudoku([["4", "x", "3", "4"],
-                         ["x", "3", "x", "x"],
-                         ["3", "1", "x", "2"],
-                         ["x", "4", "x", "x"]])
-
-        self.assertFalse(sudoku.validar())
-
-    def test_Sudoku_4_misma_columna(self):
-        sudoku = Sudoku([["4", "x", "3", "1"],
-                         ["x", "3", "x", "x"],
-                         ["3", "1", "x", "2"],
-                         ["x", "4", "3", "x"]])
-
-        self.assertFalse(sudoku.validar())
-
-    def test_Sudoku_4_misma_zona(self):
-
-        sudoku = Sudoku([["4", "x", "3", "1"],
-                         ["x", "x", "x", "x"],
-                         ["3", "1", "x", "2"],
-                         ["x", "3", "x", "x"]])
-
-        self.assertFalse(sudoku.validar())
+    @parameterized.expand([
+        ("4", 0, 1),
+        ("3", 0, 1),
+        ("4", 1, 0),
+        ("3", 1, 0),
+        ("1", 3, 0),
+        ("1", 1, 2),
+        ("2", 3, 2),
+        ("3", 0, 1),
+        ("3", 1, 3),
+        ("1", 2, 2),
+        ("4", 3, 3),
+        ("4", 3, 0),
+        ("3", 1, 0),
+        ("4", 0, 1),
+        ("1", 0, 1),
+        ("3", 3, 2),
+        ("1", 3, 3),
+        ("2", 1, 3)
+    ])
+    def test_Sudoku_4_metodo_validar(self, numero, fila, columna):
+        self.sudoku4.tablero[fila][columna] = numero
+        self.assertFalse(self.sudoku4.validar())
 
     def test_Sudoku_4_tablero_correcto(self):
 
@@ -249,7 +236,7 @@ class TestSudoku(unittest.TestCase):
         (3, 1, 0),
         (1, 3, 0),
         (1, 1, 2),
-        (2, 3, 2),
+        (2, 3, 2)
     ])
     def test_Sudoku_4_poner_numeros_misma_zona(self, numero, fila, columna):
 
@@ -261,7 +248,7 @@ class TestSudoku(unittest.TestCase):
         (3, 0, 1),
         (3, 1, 3),
         (1, 2, 2),
-        (4, 3, 3),
+        (4, 3, 3)
     ])
     def test_Sudoku_4_poner_numeros_misma_fila(self, numero, fila, columna):
 
@@ -276,7 +263,7 @@ class TestSudoku(unittest.TestCase):
         (1, 0, 1),
         (3, 3, 2),
         (1, 3, 3),
-        (2, 1, 3),
+        (2, 1, 3)
     ])
     def test_Sudoku_4_poner_numeros_misma_columna(self, numero, fila, columna):
 
