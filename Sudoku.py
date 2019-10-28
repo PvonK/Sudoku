@@ -35,6 +35,7 @@ class Sudoku():
 
         # Creo una tabla transpuesta
         # y valido si algun elemento se repite en las columnas
+        # usando validar filas
         self.tablaT = []
         for i in range(self.tam):
             self.column = []
@@ -45,7 +46,9 @@ class Sudoku():
         if not self.validarFilas(self.tablaT):
             return False
 
-        # Valido si algun elemento se repite en las zonas
+        # hago una lista con los elementos de las zonas como filas
+        # y valido si algun elemento se repite en las zonas
+        # usando validar filas
         self.listaDeZonas = []
         for i in range(0, self.tam, self.zona):
             for j in range(0, self.tam, self.zona):
@@ -61,9 +64,19 @@ class Sudoku():
 
     def getTable(self):
         self.tableroImpreso = ""
-        for fila in self.tablero:
-            for elemento in fila:
-                self.tableroImpreso += elemento + " "
+        for i in range(self.tam):
+            if i == self.zona or i == self.zona*2:
+                for n in range(self.tam):
+                    self.tableroImpreso += "--"
+                    if n == self.zona-1 or n == self.zona*2-1:
+                        self.tableroImpreso += "+-"
+                if n == self.zona-1 or n == self.zona*2-1:
+                    self.tableroImpreso = self.tableroImpreso[:-3]
+                self.tableroImpreso += "\n"
+            for j in range(self.tam):
+                if j == self.zona or j == self.zona*2:
+                    self.tableroImpreso += "| "
+                self.tableroImpreso += self.tablero[i][j] + " "
             self.tableroImpreso += "\n"
 
         return self.tableroImpreso

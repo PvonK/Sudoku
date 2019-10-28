@@ -1,12 +1,15 @@
 import requests
 
 
-def api(tam):
+def api(tam, level):
     resp = requests.get(
-        'http://www.cs.utep.edu/cheon/ws/sudoku/new/?level=1&size=' + str(tam)
+        'http://www.cs.utep.edu/cheon/ws/sudoku/new/?level=' +
+        level +
+        '&size=' +
+        str(tam)
         )
 
-    lista = [["x" for __ in range(tam)] for _ in range(tam)]
+    lista = [["x" for j in range(tam)] for i in range(tam)]
 
     for item in resp.json()["squares"]:
         lista[item["y"]][item["x"]] = str(item["value"])
