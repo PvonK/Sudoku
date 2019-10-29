@@ -6,4 +6,4 @@ WORKDIR /Sudoku
 RUN pip install -r requirements.txt
 RUN pip install parameterized
 
-CMD [ ". ejec_Interfaz_y_test.sh" ]
+CMD [ "pwd" ]
